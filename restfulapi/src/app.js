@@ -1,6 +1,7 @@
 const express=require("express");
-require("./db/conn");
-const Product=require("./models/product");
+require("../src/db/conn");
+const Product=require("../src/models/product");
+
 const app=express();
 const port=process.env.PORT || 8000;
 
@@ -11,20 +12,17 @@ app.post("/products",async(req,res)=>{
     try
         {
             const user=new Product(req.body);
-             user=await user.save();
-            res.send(user);
+             insertuser=await user.save();
+            res.status(201).send(insertuser);
         }catch(e)
         {
-            res.send(e);
+            res.status(400).send(e);
         };
 })
-// app.get("/students",(req,res)=>{
-//     res.send("Hello this is post request");
-// })
 app.get("/products",async(req,res)=>
 {
     try{
-        const productsdata=await Product.find();
+        const productsdata=await Product.find({});
         res.send(productsdata);
     }
     catch(e)
